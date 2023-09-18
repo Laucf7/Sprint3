@@ -105,7 +105,7 @@ function generateCart() {
 
     let itemFound;
 
-    cartList.forEach(item) => {
+    cartList.forEach((item)=> {
         itemFound = cart.find((product) => product.id === item.id);
         if (itemFound == undefined) {
             item.quantity = 1;
@@ -113,7 +113,7 @@ function generateCart() {
         } else {
             itemFound.quantity++;
         }
-    }
+    }) 
 }
 
 // Exercise 5
