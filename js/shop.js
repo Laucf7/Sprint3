@@ -1,6 +1,6 @@
 // If you have time, you can move this variable "products" to a json or js file and load the data in this js. It will look more professional
 var products = [
-   {
+    {
         id: 1,
         name: 'cooking oil',
         price: 10.5,
@@ -75,12 +75,12 @@ var total = 0;
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
-    for(let i = 0; i < products.length; i++) {
-        if(id === products[i].id){
+    for (let i = 0; i < products.length; i++) {
+        if (id === products[i].id) {
             cartList.push(products[i]);
         }
     }
-    console.log('New list:' ,cartList);
+    console.log('New list:', cartList);
 }
 
 // Exercise 2
@@ -92,7 +92,7 @@ function cleanCart() {
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
-    for (let i=0; i<cartList.length; i++){
+    for (let i = 0; i < cartList.length; i++) {
         total += cartList[i].price;
     }
     console.log('El total del carrito es:' + total.toFixed(2));
@@ -102,20 +102,18 @@ function calculateTotal() {
 function generateCart() {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-    for (let i=0; i<cartList.length; i++){
-        cartList[i].quantity = 1;
-    }
-    console.log('NewArticle', cartList);
 
-    for(let i=0; i<cartList.length; i++){
-        const artExist = cart.findIndex(index => index.id === cartList[i].id);
-        if(artExist !== -1){
-            cart[artExist].quantity +=1;
+    let itemFound;
+
+    cartList.forEach(item) => {
+        itemFound = cart.find((product) => product.id === item.id);
+        if (itemFound == undefined) {
+            item.quantity = 1;
+            cart.push(item);
         } else {
-            cart.push(cartList[i]);
+            itemFound.quantity++;
         }
     }
-    console.log('cart:', cart);
 }
 
 // Exercise 5
@@ -131,7 +129,7 @@ function printCart() {
 
 // ** Nivell II **
 
-// Exercise 7
+// Exercise 8
 function addToCart(id) {
     // Refactor previous code in order to simplify it 
     // 1. Loop for to the array products to get the item to add to cart
@@ -144,7 +142,7 @@ function removeFromCart(id) {
     // 2. Add found product to the cartList array
 }
 
-function open_modal(){
-	console.log("Open Modal");
-	printCart();
+function open_modal() {
+    console.log("Open Modal");
+    printCart();
 }
