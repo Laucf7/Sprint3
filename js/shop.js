@@ -7,7 +7,7 @@ var products = [
         type: 'grocery',
         offer: {
             number: 3,
-            percent: 20
+            percent: 4.5
         }
     },
     {
@@ -23,7 +23,7 @@ var products = [
         type: 'grocery',
         offer: {
             number: 10,
-            percent: 30
+            percent: 33
         }
     },
     {
@@ -114,11 +114,28 @@ function generateCart() {
             itemFound.quantity++;
         }
     }) 
+    console.log('Cart:',cart);
 }
 
 // Exercise 5
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
+
+    let subtotal;
+    
+    cart.forEach((item) => {
+        subtotal = item.price * item.quantity;
+        if (item.offer != undefined) {
+            if (item.quantity >= item.offer.number) {
+                item.subtotalWithDiscount = Math.floor(
+                    subtotal - (subtotal * item.offer.percent) / 100
+                );
+            }
+        }
+    });
+    console.log("discount", cart)
+
+
 }
 
 // Exercise 6
@@ -145,4 +162,6 @@ function removeFromCart(id) {
 function open_modal() {
     console.log("Open Modal");
     printCart();
+    generateCart();
+    applyPromotionsCart();
 }
