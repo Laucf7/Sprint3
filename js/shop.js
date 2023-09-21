@@ -2,7 +2,7 @@
 var products = [
     {
         id: 1,
-        name: 'cooking oil',
+        name: 'Cooking oil',
         price: 10.5,
         type: 'grocery',
         offer: {
@@ -71,13 +71,16 @@ var cart = [];
 
 var total = 0;
 
+
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
     for (let i = 0; i < products.length; i++) {
         if (id === products[i].id) {
-            cartList.push(products[i]);
+            // Clonar!!! Hemos clonado el array de productos a un nuevo array, para que no nos modifique el array original de productos
+            let newProduct = {...products[i]};
+            cartList.push(newProduct);
         }
     }
     console.log('New list:', cartList);
@@ -86,16 +89,43 @@ function buy(id) {
 // Exercise 2
 function cleanCart() {
     cartList.splice(0);
-    console.log('splice', cartList);
+    cart.splice(0);
+    total = 0;
+    
+
+    document.getElementById('count_product').innerHTML = cartList.length;
+
+    document.getElementById('cart_list').innerHTML = "";
+
+    document.getElementById('total_price').innerHTML = "0";
+
+    //console.log('splice', cartList);
+
+    /*let tableBody = document.querySelector('tbody#cart_list');
+    tableBody.innerHTML = "";
+    let totalPrice = document.querySelector('span#total_price');
+    totalPrice.innerHTML = "";
+    */
+
+
 }
 
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
-    for (let i = 0; i < cartList.length; i++) {
-        total += cartList[i].price;
+
+    for (let i = 0; i < cart.length; i++) {
+        if (cart[i].subtotalWithDiscount == undefined) {
+            total += cart[i].subtotal;
+        } else {
+            total += cart[i].subtotalWithDiscount;
+        }
+
     }
+    console.log()
     console.log('El total del carrito es:' + total.toFixed(2));
+
+
 }
 
 // Exercise 4
@@ -105,7 +135,7 @@ function generateCart() {
 
     let itemFound;
 
-    cartList.forEach((item)=> {
+    cartList.forEach((item) => {
         itemFound = cart.find((product) => product.id === item.id);
         if (itemFound == undefined) {
             item.quantity = 1;
@@ -113,35 +143,71 @@ function generateCart() {
         } else {
             itemFound.quantity++;
         }
-    }) 
-    console.log('Cart:',cart);
+    })
+    console.log('Cart:', cart);
 }
 
 // Exercise 5
+
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
 
-    let subtotal;
-    
     cart.forEach((item) => {
-        subtotal = item.price * item.quantity;
+        item.subtotal = item.price * item.quantity;
         if (item.offer != undefined) {
             if (item.quantity >= item.offer.number) {
                 item.subtotalWithDiscount = Math.floor(
-                    subtotal - (subtotal * item.offer.percent) / 100
+                    item.subtotal - (item.subtotal * item.offer.percent) / 100
                 );
             }
         }
     });
     console.log("discount", cart)
 
-
 }
+
 
 // Exercise 6
+// Fill the shopping cart modal manipulating the shopping cart dom
 function printCart() {
-    // Fill the shopping cart modal manipulating the shopping cart dom
-}
+    generateCart();
+    applyPromotionsCart();
+    calculateTotal();
+    printItems();
+    printTotal();
+};
+
+function printItems() {
+    let totalProductPrice;
+    let tableBody = document.querySelector('tbody#cart_list'); //aqui llamamos a la tabla
+    let tableRow; // variable para guardar la nueva info de la tabla
+    tableBody.innerHTML = ""; //aquí vaciamos la tabla 
+
+    cart.forEach((item) => {
+        tableRow = document.createElement('tr'); //aquí miramos si cogemos el precio normal o el valor con descuento
+
+        if (item.subtotalWithDiscount != undefined) {
+            totalProductPrice = item.subtotalWithDiscount;
+        } else {
+            totalProductPrice = item.subtotal;
+        }
+
+        //ahora indicamos que valores ha de coger la tabla
+        tableRow.innerHTML = `
+                <th scope="row">${item.name}</th>
+				<td>$${item.price}</td>
+				<td>${item.quantity}</td>
+				<td>$${totalProductPrice}</td>
+    `;
+        tableBody.appendChild(tableRow); //esto nos permite subir la información
+
+    });
+
+};
+
+function printTotal() {
+    document.getElementById('total_price').innerHTML = total; //aquí imprimimos el precio total del carrito
+};
 
 
 // ** Nivell II **
@@ -153,7 +219,7 @@ function addToCart(id) {
     // 2. Add found product to the cart array or update its quantity in case it has been added previously.
 }
 
-// Exercise 8
+// Exercise 9
 function removeFromCart(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
@@ -162,6 +228,4 @@ function removeFromCart(id) {
 function open_modal() {
     console.log("Open Modal");
     printCart();
-    generateCart();
-    applyPromotionsCart();
 }
