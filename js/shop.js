@@ -78,7 +78,7 @@ function buy(id) {
     // 2. Add found product to the cartList array
     for (let i = 0; i < products.length; i++) {
         if (id === products[i].id) {
-            // Clonar!!! Hemos clonado el array de productos a un nuevo array, para que no nos modifique el array original de productos
+            // Clonar!!! A continuacion clonamos el array de productos a un nuevo array, para que no nos modifique el array original de productos
             let newProduct = {...products[i]};
             cartList.push(newProduct);
         }
