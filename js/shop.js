@@ -1,3 +1,4 @@
+
 // If you have time, you can move this variable "products" to a json or js file and load the data in this js. It will look more professional
 var products = [
     {
@@ -184,7 +185,8 @@ function printItems() {
     tableBody.innerHTML = ""; //aquí vaciamos la tabla 
 
     cart.forEach((item) => {
-        tableRow = document.createElement('tr'); //aquí miramos si cogemos el precio normal o el valor con descuento
+        tableRow = document.createElement('tr'); 
+        //aquí miramos si cogemos el precio normal o el valor con descuento
 
         if (item.subtotalWithDiscount != undefined) {
             totalProductPrice = item.subtotalWithDiscount;
@@ -229,3 +231,7 @@ function open_modal() {
     console.log("Open Modal");
     printCart();
 }
+
+
+
+
